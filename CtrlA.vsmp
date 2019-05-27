@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<PROJECT DESCRIPTION="">
+ <KEYWORDS/>
+ <FILES>
+  <FILE GROUP="Source Files" NAME="CtrlA.ASM"/>
+  <FILE GROUP="Design Files" NAME="TesteCtrlA.DSN"/>
+ </FILES>
+ <CONFIGURATION TARGET="Debug" COMPILER="ASEM-51 (Proteus)" NAME="Debug">
+  <CONTROLLER FAMILY="8051" CLOCK="11059200Hz" TYPE="AT89C52"/>
+  <FILE TOOL="ASM" NAME="Debug/Debug.HEX">
+   <FILE NAME="CtrlA.ASM"/>
+  </FILE>
+  <FILE NAME="TesteCtrlA.DSN"/>
+ </CONFIGURATION>
+ <CONFIGURATION TARGET="Release" COMPILER="ASEM-51 (Proteus)" NAME="Release">
+  <CONTROLLER FAMILY="8051" CLOCK="11059200" TYPE="AT89C52"/>
+  <FILE TOOL="ASM">
+   <FILE NAME="CtrlA.ASM"/>
+  </FILE>
+  <FILE NAME="TesteCtrlA.DSN"/>
+ </CONFIGURATION>
+</PROJECT>
