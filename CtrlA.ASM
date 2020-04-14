@@ -79,7 +79,7 @@ MSG2:	DB	' DIGITE A SENHA', 0
 MSG3:	DB	' ACESSO NEGADO', 0
 MSG4:	DB	'ACESSO LIBERADO', 0
 NS:	DB	'0123456789'		;caracteres numéricos
-SENHA:	DB	0, 0, 0, 0, 0, 0	;senha salva na EEPROM 0, 1, 7, 7, 5, 8
+SENHA:	DB	0, 1, 7, 7, 5, 8	;senha salva na EEPROM
 
 MAIN:	CLR	RW			;Display no modo de escrita
 	CLR	SOLEN			;desliga solenoide
