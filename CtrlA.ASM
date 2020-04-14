@@ -17,7 +17,7 @@
 ;$INCLUDE (89S8252.MCU)			;Inclue definicões do uC
 
 DEBUG	MACRO				;Macro para debugar sem delays
-RET
+;RET
 ENDM
 
 ;DPL	DATA	DP0L
