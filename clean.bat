@@ -4,4 +4,5 @@ del /s *.hex
 del /s *.bin
 del /s *.SDI
 del /s *.lst
+del /s *.LBK
 del /s DEBUG
