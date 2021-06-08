@@ -84,40 +84,40 @@ SENHA:	DB	0, 1, 7, 7, 5, 8	;senha salva na EEPROM
 MAIN:	CLR	RW			;Display no modo de escrita
 	CLR	SOLEN			;desliga solenoide
 	CLR	BUZZER			;desliga buzzer	
-	LCALL	LCD_INIT		;Inicializa display 
-	LCALL	SOM
+	CALL	LCD_INIT		;Inicializa display 
+	CALL	SOM
 	MOV	TRY, #3			;Adiciona 3 tentativas de erro	
 START:	MOV	R7, TRY
 	CJNE	R7, #0, OKS		;Compara tentativa com 0 se for maior continua
 	MOV	A, #01H			;Limpa display e move cursor para linha 1
-	LCALL	COMAND
+	CALL	COMAND
 	MOV	DPTR, #MSGB		;Escreve 'ACESSO BLOQUEADO'
-	LCALL	MSG
-	SJMP	$			;Bloqueia acesso para sempre		
+	CALL	MSG
+	JMP	$			;Bloqueia acesso para sempre		
 OKS:	MOV	A, #01H			;Limpa display e move cursor para linha 1
-	LCALL	COMAND
+	CALL	COMAND
 	MOV	DPTR, #MSG0		;Escreve '    PASSE O'
-	LCALL	MSG
+	CALL	MSG
 	MOV	A, #LIN2+5		;Seleciona a linha 2 posicao 5
-	LCALL	COMAND
+	CALL	COMAND
 	MOV	DPTR, #MSG1		;Escreve 'CARTAO'
-	LCALL	MSG
+	CALL	MSG
 	MOV	A, #100			;Espera 100ms
-	LCALL	WAITMS
+	CALL	WAITMS
 	JNB	RX, $			;espera leitor ler
-	LCALL	SOM
+	CALL	SOM
 	MOV	A, #100			;Espera 100ms
-	LCALL	WAITMS
-	LCALL	WAITMS
+	CALL	WAITMS
+	CALL	WAITMS
 
 PROCES:	MOV	A, #01H			;Limpa display e move cursor para linha 1
-	LCALL	COMAND
+	CALL	COMAND
 
 	MOV	DPTR, #MSG2		;Escreve 'DIGITE A SENHA'
-	LCALL	MSG
+	CALL	MSG
 
 	MOV	A, #LIN2+5		;Seleciona a linha 2 posicao 5
-	LCALL	COMAND
+	CALL	COMAND
 
 	MOV	P0, #0FFH		;Reseta P0
 	MOV	POSICAO, #0		;Limpa posicao do Numero no display
@@ -127,63 +127,63 @@ PROCES:	MOV	A, #01H			;Limpa display e move cursor para linha 1
 INICIO:	CLR	LINA			;seleciona a linha A
 	JB	COL1, NEXT0
 	MOV	A, #7
-	LCALL	TECLA
+	CALL	TECLA
 NEXT0:	JB	COL2, NEXT1
 	MOV	A, #8
-	LCALL	TECLA
+	CALL	TECLA
 NEXT1:	JB	COL3, NEXT2
 	MOV	A, #9
-	LCALL	TECLA
+	CALL	TECLA
 NEXT2:	JB	COL4, NEXT3
-	;LCALL	TECLAF3
+	;CALL	TECLAF3
 NEXT3:	SETB	LINA
 	CLR	LINB			;seleciona a linha B
 	JB	COL1, NEXT4
 	MOV	A, #4
-	LCALL	TECLA
+	CALL	TECLA
 NEXT4:	JB	COL2, NEXT5
 	MOV	A, #5
-	LCALL	TECLA
+	CALL	TECLA
 NEXT5:	JB	COL3, NEXT6
 	MOV	A, #6
-	LCALL	TECLA
+	CALL	TECLA
 NEXT6:	JB	COL4, NEXT7
-	LCALL	TECLAF2
+	CALL	TECLAF2
 NEXT7:	SETB	LINB
 	CLR	LINC			;seleciona a linha C
 	JB	COL1, NEXT8
 	MOV	A, #1
-	LCALL	TECLA
+	CALL	TECLA
 NEXT8:	JB	COL2, NEXT9
 	MOV	A, #2
-	LCALL	TECLA
+	CALL	TECLA
 NEXT9:	JB	COL3, NEXT10
 	MOV	A, #3
-	LCALL	TECLA
+	CALL	TECLA
 NEXT10:	JB	COL4, NEXT11
-	LCALL	TECLAF1
+	CALL	TECLAF1
 NEXT11:	SETB	LINC
 	CLR	LIND			;seleciona a linha D
 	JB	COL1, NEXT12
 	MOV	A, #0
-	LCALL	TECLA
+	CALL	TECLA
 NEXT12:	JB	COL2, NEXT13
-	;LCALL	TECLAP
+	;CALL	TECLAP
 NEXT13:	JB	COL3, NEXT14
 	MOV	A, #0FFH
-	LCALL	TECLAC
+	CALL	TECLAC
 NEXT14:	JB	COL4, NEXT15
-	LCALL	TECLAE
+	CALL	TECLAE
 NEXT15:	SETB	LIND
 
 ;	INC	R7
 ;	CJNE	R7,#250,PINICIO
 ;	INC	R6
 ;	CJNE	R6,#250,PINICIO
-;		LCALL	SOM
+;		CALL	SOM
 ;	MOV	A,#200
-;	LCALL	WAITMS
-;		LCALL	SOM		
+;	CALL	WAITMS
+;		CALL	SOM		
 ;	JMP	START
 
 PINICIO:	JMP	INICIO
@@ -201,7 +201,7 @@ TECLA:	MOV	R1,POSICAO
 	MOV	A, NUMERO		;Move p/ACC o numero digitado anteriormente
 	MOV	DPTR, #NS		;Move para o DataPointer o endereco do caracter ASCII em NS
 	MOVC	A, @A+DPTR		;Move p/ACC o caracter ASCII relativo ao numero digitado
-	LCALL	WRITE			;Escreve caracter numérico no display
+	CALL	WRITE			;Escreve caracter numérico no display
 
 	MOV	A, POSICAO		;Move p/ACC a posicao do numero no display
 	ADD	A, #N1			;Soma com 20 para enderecar a posicao das senhas
@@ -221,16 +221,16 @@ TECLAF3:				;TECLA F3
 TECLAF2:				;TECLA F2
 	MOV	DPTR, #ADDRESS		; address to write
 	MOV	A, #'J'			; data to write
-	LCALL	WRITEX			;Escreve na EEPROM
+	CALL	WRITEX			;Escreve na EEPROM
 	RET
 
 TECLAF1:				;TECLA F1
 ; * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 	MOV	A, #LIN2+5		;Seleciona a linha 2 posicao 5
-	LCALL	COMAND
+	CALL	COMAND
 	MOV	DPTR, #ADDRESS		;Move para DPTR o valor do endereco da memoria eeprom
-	LCALL	MSGEXT			; escreve no display o valor lido na memoria eeprom
-	LCALL	SOM
+	CALL	MSGEXT			; escreve no display o valor lido na memoria eeprom
+	CALL	SOM
 	RET
 ; * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *	
 TECLAP:					;TECLA PONTO
@@ -248,11 +248,11 @@ CONT:	DEC	POSICAO			;decrementa posicao
 	MOV	@R0, #0			;Apaga numero digitado nas posicões N
 	
 	MOV	A, #10H			;comando p/mover o cursor para esquerda
-	LCALL	COMAND
+	CALL	COMAND
 	MOV	A, #' '			;escreve ' ' para apagar numero digitado
-	LCALL	WRITE
+	CALL	WRITE
 	MOV	A, #10H			;comando p/mover o cursor para esquerda
-	LCALL	COMAND
+	CALL	COMAND
 	JNB	COL3, $			;espera tecla C ser liberada
 	RET
 
@@ -273,10 +273,10 @@ NEXTN:	MOV	A, R3			;move p/ACC o valor de R3
 	CJNE	R3, #5, INCREM		;proximo numero
 
 	MOV	A, #01H			;senha correta
-	LCALL	COMAND			;comando para apagar display
+	CALL	COMAND			;comando para apagar display
 	MOV	DPTR, #MSG4		;escreve 'ACESSO	LIBERADO'
-	LCALL	MSG
-	LCALL	SOM
+	CALL	MSG
+	CALL	SOM
 	MOV	TRY, #3			;Adiciona 3 tentativas de erro			
 
 	ACALL	ENVIA
@@ -288,15 +288,15 @@ NEXTN:	MOV	A, R3			;move p/ACC o valor de R3
 	CLR	SOLEN			;desliga solenoide
 
 	MOV	A, #125
-	LCALL	WAITMS
-	LCALL	WAITMS			;espera 250ms
+	CALL	WAITMS
+	CALL	WAITMS			;espera 250ms
 
 	JB	SENSOR, $		;espera porta fechar
 	MOV	A, #125			;espera 125ms
-	LCALL	WAITMS
+	CALL	WAITMS
 	JB	SENSOR, $-5		;se porta estiver aberta ainda verifica novamente
 
-	LCALL	SOM
+	CALL	SOM
 
 	;CLR	SOLEN			;desliga solenoide
 	DEC	SP			;decrementa 2X o StackPointer pois nao sera utilizada a instrucao RET
@@ -307,18 +307,18 @@ INCREM:	INC	R3			;Incrementa a posicao do numero em N
 	JMP	NEXTN			;verifica proximo numero
 
 ERRADA:	MOV	A, #01H			;senha errada
-	LCALL	COMAND			;comando para apagar display
+	CALL	COMAND			;comando para apagar display
 	MOV	DPTR, #MSG3		;escreve 'ACESSO NEGADO'
-	LCALL	MSG
-	LCALL	SOM
+	CALL	MSG
+	CALL	SOM
 	MOV	A, #125
-	LCALL	WAITMS			;espera 125ms
-	LCALL	SOM
+	CALL	WAITMS			;espera 125ms
+	CALL	SOM
 	MOV	A, #125			;127ms é o maximo possível			
-	LCALL	WAITMS
-	LCALL	WAITMS
-	LCALL	WAITMS
-	LCALL	WAITMS			;espera 500ms
+	CALL	WAITMS
+	CALL	WAITMS
+	CALL	WAITMS
+	CALL	WAITMS			;espera 500ms
 	DEC	TRY			;decrementa tentativa	
 	DEC	SP			;decrementa 2X o StackPointer pois nao sera utilizada a instrucao RET
 	DEC	SP
@@ -330,38 +330,38 @@ RETOR:	RET
 ;Sub-rotina de Inicializacao do display LCD
 ; * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-LCD_INIT:
-	DEBUG
+LCD_INIT:	
+	;DEBUG
 	MOV	A, #20
-	LCALL	WAITMS			;Wait 20ms for LCD to power up
+	CALL	WAITMS			;Wait 20ms for LCD to power up
 	CLR	RS			;with RS = 0
 	MOV	P2, #30H		;Write D7-4 = 3 hex
 	SETB	EN			;
 	CLR	EN			;Send enable
 	MOV	A, #5
-	LCALL	WAITMS			;Wait 5ms
+	CALL	WAITMS			;Wait 5ms
 	SETB	EN			;
 	CLR	EN			;Send enable
-	LCALL	WAIT200			;Wait 200us
+	CALL	WAIT200			;Wait 200us
 	SETB	EN			;
 	CLR	EN			;Send enable
-	LCALL	WAIT200			;Wait 200us
+	CALL	WAIT200			;Wait 200us
 	MOV	P2, #20H		;Write D7-4 = 3 hex
 	SETB	EN			;enable four-bit mode
 	CLR	EN			;Send enable
 	MOV	A, #5
-	LCALL	WAITMS			;Wait 5ms
+	CALL	WAITMS			;Wait 5ms
 
 	MOV	A, #28H			;comand 28 hex (4-Bits, 2-lines)
-	LCALL	COMAND
+	CALL	COMAND
 	MOV	A, #08H			;comand 08 hex (dont shift display, hide cursor)
-	LCALL	COMAND
+	CALL	COMAND
 	MOV	A, #01H			;comand 01 hex (clear and home display)
-	LCALL	COMAND
+	CALL	COMAND
 	MOV	A, #06H			;comand 06 hex (move cursor right)
-	LCALL	COMAND
+	CALL	COMAND
 	MOV	A, #0CH			;comand 0C hex (turn on display)
-	LCALL	COMAND
+	CALL	COMAND
 	RET				;Display is ready to accept data.
 
 ; * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
@@ -371,7 +371,7 @@ LCD_INIT:
 ; * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 ;Sub-rotina de escrita de comando no display
 ; * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *		
-COMAND:	DEBUG
+COMAND:	;DEBUG
 	CLR	EN
 	CLR	RS
 	MOV	C, 0E7H
@@ -386,7 +386,7 @@ COMAND:	DEBUG
 	CLR	EN
 	PUSH	ACC			;Salva ACC
 	MOV	A, #5
-	LCALL	WAITMS			;Espera 5ms
+	CALL	WAITMS			;Espera 5ms
 	POP	ACC			;Recupera ACC
 	MOV	C, 0E3H
 	MOV	D7, C
@@ -399,13 +399,13 @@ COMAND:	DEBUG
 	SETB	EN
 	CLR	EN
 	MOV	A, #5
-	LCALL	WAITMS
+	CALL	WAITMS
 	RET				;Fim da sub-rotina
 
 ; * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
 ;Sub-rotina de escrita de caracter no display
 ; * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-WRITE:	DEBUG
+WRITE:	;DEBUG
 	CLR	EN
 	SETB	RS
 	MOV	C, 0E7H
@@ -418,7 +418,7 @@ WRITE:	DEBUG
 	MOV	D4, C
 	SETB	EN
 	CLR	EN
-	LCALL	WAIT200			;Wait 200us
+	CALL	WAIT200			;Wait 200us
 	MOV	C, 0E3H
 	MOV	D7, C
 	MOV	C, 0E2H
@@ -429,36 +429,36 @@ WRITE:	DEBUG
 	MOV	D4, C
 	SETB	EN
 	CLR	EN
-	LCALL	WAIT200			;Wait 200us 	
+	CALL	WAIT200			;Wait 200us 	
 	RET				;Fim da sub-rotina
 
-MSG:	DEBUG
+MSG:	;DEBUG
 	MOV	R5, #0			;Sub-rotina p/escrever a mensagem selecionada
 LOOP:	MOV	A, R5
 	MOVC	A, @A+DPTR
 	CJNE	A, #0, NEXT
-	SJMP	EXIT
-NEXT:	LCALL	WRITE
+	JMP	EXIT
+NEXT:	CALL	WRITE
 	INC	R5
 	JMP	LOOP
 EXIT:	RET
 
-SOM:	DEBUG				;sub-rotina de espera de 200us
+SOM:	;DEBUG				;sub-rotina de espera de 200us
 	MOV	R5, #200
 SOM2:	CPL	BUZZER
 	MOV	A, #1
-	LCALL	WAITMS
+	CALL	WAITMS
 	DJNZ	R5, SOM2
 	RET
 
 WAIT200:				;sub-rotina de espera de 200us
-	DEBUG
+	;DEBUG
 	MOV	R7, #100		;move o valor 100 para R7
 	DJNZ	R7, $			;decrementa até R7 = 0, obs.: DJNZ demora 2 ciclos, por o valor 100 e nao 200
 	RET
 
 ;Sub-rotina de espera na unidade de milisegundo de 0 a 127ms
-WAITMS:	DEBUG			
+WAITMS:	;DEBUG			
 	;PUSH	ACC			;Salva ACC
 	RL	A			;Multiplica por 2
 	MOV	R7, A			;Move o valor de A para R7
@@ -469,7 +469,7 @@ WAITMS:	DEBUG
 	RET
 
 ;Sub-rotina de espera na unidade de segundo		
-WAIT_S:	DEBUG
+WAIT_S:	;DEBUG
 	MOV	R7, A			;move p/R7 o valor de A
 	MOV	R6, #8			;move p/R6 o valor 8
 	MOV	R5, #250		;move p/R5 o valor 250
@@ -480,7 +480,7 @@ WAIT_S:	DEBUG
 	DJNZ	R7, $-12		;Decrementa R7 e recarrega R6 se diferente de zero
 	RET
 
-DEBOUN: DEBUG
+DEBOUN: ;DEBUG
 	MOV	R7, #250		;debouncing de 10ms para evitar rebatimento
 VERIF2:	MOV	R6, #20			;
 VERIF:	MOV	A, P0			;
@@ -510,7 +510,7 @@ WRITEX:	ORL	WMCON, #EEMEN		;enable EEPROM accesses
 	ORL	WMCON, #EEMWE		;enable EEPROM writes
 	MOVX	@DPTR, A		;write EEPROM
 	MOV	A, #10
-	LCALL	WAITMS			; espera 10ms
+	CALL	WAITMS			; espera 10ms
 	;movx 	a, @DPTR 		;read EEPROM
 	;cjne 	a, #DATA, ERROR		;jump if data compare fails
 	XRL	WMCON, #EEMWE		;disable EEPROM writes
@@ -522,8 +522,8 @@ MSGEXT:					;Sub-rotina p/escrever a mensagem selecionada localizada na memoria 
 	ORL	WMCON, #EEMEN		;enable EEPROM accesses 
 LOOPX:	MOVX	A, @DPTR		;Move para A o valor que o DPTR aponta na memoria eeprom
 	CJNE	A, #0, NEXTX		;Compara A com 0 e pula para NEXTX se nao for igual
-	SJMP	EXITX			;Pula para EXITX
-NEXTX:	LCALL	WRITE			;Escreve no display o caracter em ACC
+	JMP	EXITX			;Pula para EXITX
+NEXTX:	CALL	WRITE			;Escreve no display o caracter em ACC
 	MOV	POSICAO, #0		;Limpa posicao do Numero no display
 	INC	DPTR			;Incrementa a parte baixa do DPTR (=INC DPL)
 	JMP	LOOPX			;Pula para LOOPX
