@@ -72,7 +72,7 @@ TRY	DATA	28H			;local onde o numero de tentativas é salvo
 	;RETI
 
 ;mensagens gravadas na memoria de codigo do microcontrolador
-MSGB:	DB	'ACESSO BLOQUEADO'
+MSGB:	DB	'ACESSO BLOQUEADO', 0
 MSG0:	DB	'    PASSE O', 0
 MSG1:	DB	'CARTAO', 0
 MSG2:	DB	' DIGITE A SENHA', 0
