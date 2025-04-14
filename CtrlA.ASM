@@ -135,7 +135,7 @@ NEXT1:	JB	COL3, NEXT2
 	MOV	A, #9
 	CALL	TECLA
 NEXT2:	JB	COL4, NEXT3
-	;CALL	TECLAF3
+	CALL	TECLAF3
 NEXT3:	SETB	LINA
 	CLR	LINB			;seleciona a linha B
 	JB	COL1, NEXT4
@@ -216,12 +216,17 @@ VOLTA:	MOV	A, P0			;Espera liberar qualquer tecla
 FIM:	RET
 
 TECLAF3:				;TECLA F3
+	MOV	DPTR, #ADDRESS		; address to write
+	MOV	A, #'G'			; data to write
+	CALL	WRITEX			;Escreve na EEPROM
+	CALL	SOM
 	RET
 
 TECLAF2:				;TECLA F2
 	MOV	DPTR, #ADDRESS		; address to write
 	MOV	A, #'J'			; data to write
 	CALL	WRITEX			;Escreve na EEPROM
+	CALL	SOM
 	RET
 
 TECLAF1:				;TECLA F1
