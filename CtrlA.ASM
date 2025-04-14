@@ -498,7 +498,7 @@ VAI2:	DJNZ	R6, VERIF		;
 
 ENVIA:	MOV	TMOD, #00100000B	;Timer 1 no modo 2 (8 bits com recarga automatica)
 	MOV	PCON, #00000000B	;Sem dobrar a frequencia
-	MOV	TH1, #0FDH	;	Recarga do TIMER 1 para 9600 bauds
+	MOV	TH1, #0FDH		;Recarga do TIMER 1 para 9600 bauds
 	SETB	TR1			;Liga TIMER 1
 	MOV	SCON, #01000000B	;Serial no modo 1 (Assincrona, 8 bits, Timer1
 	MOV	A, #127
